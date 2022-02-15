@@ -1,12 +1,18 @@
 package ru.gb.course1.di1
 
 import android.app.Application
-import ru.gb.course1.di1.di.dependencies
+import android.content.Context
+import ru.gb.course1.di1.di.DaggerMyComponent
+import ru.gb.course1.di1.di.MyModule
 
 class App : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        dependencies(this)
+    val di by lazy {
+        DaggerMyComponent.builder()
+            .myModule(MyModule(this))
+            .build()
     }
 
 }
+
+val Context.app: App
+    get() = applicationContext as App
