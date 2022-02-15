@@ -6,8 +6,15 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [MyModule::class])
-interface MyComponent {
+@Component(
+    modules = [
+        MyModule::class,
+        AppModule::class,
+        DbModule::class,
+        MvpModule::class
+    ]
+)
+interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
 
