@@ -3,33 +3,28 @@ package ru.gb.course1.di1.ui
 import android.os.Bundle
 import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatActivity
-import ru.gb.course1.di1.app
+import androidx.lifecycle.ViewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gb.course1.di1.databinding.ActivityMainBinding
 import ru.gb.course1.di1.domain.NoteEntity
 import ru.gb.course1.di1.domain.NoteFactory
 import ru.gb.course1.di1.domain.NoteRepo
-import javax.inject.Inject
 
-class Presenter(val message: String, val color: Int)
+class Presenter(val message: String, val color: Int): ViewModel()
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    @Inject
-    lateinit var noteFactory: NoteFactory
-    @Inject
-    lateinit var noteRepo: NoteRepo
-    @Inject
-    lateinit var presenter: Presenter
-    @Inject
-    lateinit var router: Router
+    private val noteFactory: NoteFactory by inject()
+    private val noteRepo by inject<NoteRepo>()
+    private val presenter: Presenter by viewModel()
+    private val router: Router by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        app.di.inject(this)
 
         noteRepo.getNotesLiveData().observe(this) {
             updateResult(it)

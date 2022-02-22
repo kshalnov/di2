@@ -34,12 +34,22 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    applicationVariants.all { variant ->
+        variant.sourceSets.java.each {
+            it.srcDirs += "build/generated/ksp/${variant.name}/kotlin"
+        }
+    }
 }
 
+// Use KSP Plugin
+apply plugin: 'com.google.devtools.ksp'
+
 dependencies {
-    // Dagger
-    implementation 'com.google.dagger:dagger:2.40.5'
-    kapt 'com.google.dagger:dagger-compiler:2.40.5'
+    // Koin
+    implementation "io.insert-koin:koin-android:3.2.0-beta-1"
+    implementation "io.insert-koin:koin-annotations:1.0.0-beta-1"
+    ksp "io.insert-koin:koin-ksp-compiler:1.0.0-beta-1"
 
     // room
     implementation 'androidx.room:room-common:2.3.0'
